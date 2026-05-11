@@ -17,16 +17,14 @@ context = """
 - 今月やること：共感投稿3本、コンサル生インタビューライブ
 """
 
-# チーム向けメンバー（インスタ・コンテンツ担当）
 team_members = [
-    ("とんこつ", "マーケター担当", "今日のインスタ投稿案またはストーリーズのアイデアを1つ具体的に提案してください。"),
-    ("わさび", "コンテンツ担当", "講座資料や教材の改善アイデアを1つ提案してください。"),
+    ("とんこつ", "マーケター担当", "今日のインスタ投稿アイデアを箇条書き3点のみで完結に答えてください。"),
+    ("わさび", "コンテンツ担当", "講座資料の改善アイデアを箇条書き3点のみで完結に答えてください。"),
 ]
 
-# 個人向けメンバー（戦略・リスク担当）
 personal_members = [
-    ("ごま", "リーダー・戦略担当", "今日の最優先タスクと売上に直結する戦略的アドバイスを1つ提案してください。現金残高250万、固定費月160万という状況を踏まえて。"),
-    ("からし", "反対意見担当", "今の計画で見落としているリスクや甘い部分を1つ指摘してください。財務状況も踏まえて率直に。"),
+    ("ごま", "リーダー・戦略担当", "今日の最優先タスクを箇条書き3点のみで完結に答えてください。現金残高250万、固定費月160万を踏まえて。"),
+    ("からし", "反対意見担当", "今の計画のリスクを箇条書き3点のみで完結に答えてください。財務状況も踏まえて率直に。"),
 ]
 
 def send_to_discord(webhook, messages):
@@ -40,7 +38,7 @@ def generate_report(members):
     for name, role, prompt in members:
         response = client.messages.create(
             model="claude-sonnet-4-5",
-            max_tokens=100,
+            max_tokens=200,
             messages=[
                 {
                     "role": "user",
@@ -54,12 +52,10 @@ def generate_report(members):
 
 date_str = datetime.now().strftime("%Y年%m月%d日")
 
-# チームへ送信
 team_messages = ["# Aikoチーム定期報告 " + date_str + "\n"]
 team_messages += generate_report(team_members)
 send_to_discord(team_webhook, team_messages)
 
-# 個人へ送信
 personal_messages = ["# Aikoさんへの経営レポート " + date_str + "\n"]
 personal_messages += generate_report(personal_members)
 send_to_discord(personal_webhook, personal_messages)
