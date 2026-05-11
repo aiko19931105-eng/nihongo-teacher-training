@@ -1,0 +1,26 @@
+name: Aiko Team Discord Report
+
+on:
+  schedule:
+    - cron: '0 7 * * 1,3,5'  # 月水金 フランス時間8時 (UTC 7時)
+  workflow_dispatch:  # 手動実行も可能
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          
+      - name: Install dependencies
+        run: pip install anthropic requests
+        
+      - name: Run report
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: python report.py
