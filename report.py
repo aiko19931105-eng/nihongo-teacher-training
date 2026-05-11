@@ -40,7 +40,7 @@ def generate_report(members):
     for name, role, prompt in members:
         response = client.messages.create(
             model="claude-sonnet-4-5",
-            max_tokens=150,
+            max_tokens=100,
             messages=[
                 {
                     "role": "user",
