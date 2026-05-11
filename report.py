@@ -28,7 +28,7 @@ messages.append(datetime.now().strftime("%Y年%m月%d日") + "\n")
 
 for name, role, prompt in members:
     response = client.messages.create(
-        model="claude-sonnet-4-20250514",
+        model="claude-sonnet-4-5",
         max_tokens=300,
         messages=[
             {
